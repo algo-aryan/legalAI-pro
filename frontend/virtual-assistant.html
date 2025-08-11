@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Virtual Legal Assistant - LegalAI Pro</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Chat layout & formatting fixes -->
+  <style>
+    .chat-interface {
+      display: flex;
+      height: calc(100vh - 70px - 80px);
+      max-width: 95%;
+      margin: auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .chat-sidebar {
+      width: 300px;
+      border-right: 1px solid var(--color-border);
+    }
+    .chat-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-surface);
+    }
+    .chat-messages {
+      flex: 1;
+      padding: var(--space-16);
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    .typing-indicator {
+      padding: var(--space-8) var(--space-16);
+      color: var(--color-text-secondary);
+    }
+    .quick-suggestions {
+      display: flex;
+      gap: var(--space-8);
+      padding: var(--space-8) var(--space-16);
+      border-top: 1px solid var(--color-border);
+      background: var(--color-bg-1);
+    }
+    .chat-input-area {
+      flex-shrink: 0;
+      border-top: 1px solid var(--color-border);
+      padding: var(--space-12) var(--space-16);
+      background: var(--color-surface);
+    }
+    .message-content p {
+      margin: var(--space-8) 0;
+      line-height: 1.5;
+    }
+    .message-content ul {
+      padding-left: var(--space-16);
+      margin: var(--space-8) 0;
+    }
+    .message-content li {
+      margin-bottom: var(--space-4);
+    }
+    /* Highlight keywords in orange-gold */
+    .highlight {
+      color: #DAA520;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <i class="fas fa-balance-scale nav-logo-icon"></i>
+        <span class="nav-logo-text">LegalAI Pro</span>
+      </a>
+      <div class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link" data-section="home">Home</a>
+        <a href="index.html#features" class="nav-link" data-section="features">Features</a>
+        <a href="about.html" class="nav-link" data-section="about">About</a>
+        <a href="contact.html" class="nav-link" data-section="contact">Contact</a>
+        <button class="btn btn--primary nav-cta" id="theme-toggle">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+      <div class="nav-hamburger" id="nav-hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <section class="section active" id="virtual-assistant">
+      <div class="chat-interface">
+        <aside class="chat-sidebar" id="chat-sidebar">
+          <div class="sidebar-header">
+            <h3>Legal AI Assistant</h3>
+            <span class="status online">Online</span>
+            <button class="mobile-sidebar-toggle" id="mobile-sidebar-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="chat-sessions">
+            <div class="chat-session active" id="current-session">
+              <div class="session-title">General Legal Questions</div>
+              <div class="session-date">Today</div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="chat-main">
+          <header class="chat-header">
+            <div class="assistant-info">
+              <div class="assistant-avatar"><i class="fas fa-robot"></i></div>
+              <div class="assistant-details">
+                <h3>Legal AI Assistant</h3>
+                <span class="status online">Online</span>
+              </div>
+            </div>
+            <button class="mobile-sidebar-toggle" id="mobile-sidebar-toggle">
+              <i class="fas fa-bars"></i>
+            </button>
+          </header>
+
+          <div class="chat-messages" id="chat-messages">
+            <div class="message assistant-message">
+              <div class="message-avatar"><i class="fas fa-robot"></i></div>
+              <div class="message-content">
+                <p>Hello! I'm your virtual legal assistant. I can help answer questions about various areas of law, legal procedures, and provide general legal guidance. How can I assist you today?</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="typing-indicator hidden" id="typing-indicator">
+            <div class="typing-dots"><span></span><span></span><span></span></div>
+            <span>Assistant is typing...</span>
+          </div>
+
+          <div class="quick-suggestions">
+            <button class="suggestion-btn">What is contract law?</button>
+            <button class="suggestion-btn">Employment rights basics</button>
+            <button class="suggestion-btn">How to file a lawsuit?</button>
+            <button class="suggestion-btn">Intellectual property protection</button>
+          </div>
+
+          <div class="chat-input-area">
+            <div class="chat-input-container">
+              <input type="text" id="chat-input" class="chat-input" placeholder="Ask a legal question...">
+              <button id="chat-send-btn" class="chat-send-btn">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-brand"><i class="fas fa-balance-scale nav-logo-icon"></i><span class="nav-logo-text">LegalAI Pro</span></a>
+          <p>Revolutionizing the legal industry with cutting-edge AI technology</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Products</h4>
+            <a href="contract-analyzer.html">Contract Analyzer</a>
+            <a href="virtual-assistant.html">Virtual Assistant</a>
+            <a href="case-prediction.html">Case Prediction</a>
+          </div>
+          <div class="footer-column">
+            <h4>Company</h4>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <a href="#help">Help Center</a>
+            <a href="#docs">Documentation</a>
+            <a href="#api">API Reference</a>
+            <a href="#status">Status</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 LegalAI Pro. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api-utils.js"></script>
+  <script src="js/ui-utils.js"></script>
+  <script>
+    class VirtualAssistant {
+      constructor(apiUtils) {
+        this.apiUtils = apiUtils;
+        this.init();
+      }
+      init() { this.setupVirtualAssistant(); }
+      setupVirtualAssistant() {
+        const input = document.getElementById("chat-input"),
+              sendBtn = document.getElementById("chat-send-btn");
+        if (!input || !sendBtn) return;
+        sendBtn.addEventListener("click", e => { e.preventDefault(); this.sendChatMessage(); });
+        input.addEventListener("keypress", e => {
+          if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); this.sendChatMessage(); }
+        });
+        document.querySelectorAll(".suggestion-btn").forEach(btn => {
+          btn.addEventListener("click", e => {
+            e.preventDefault();
+            input.value = btn.textContent;
+            this.sendChatMessage();
+          });
+        });
+        const open = document.getElementById("mobile-sidebar-toggle"),
+              close = document.getElementById("mobile-sidebar-close"),
+              sidebar = document.getElementById("chat-sidebar");
+        open?.addEventListener("click", e => { e.preventDefault(); sidebar.classList.add("active"); });
+        close?.addEventListener("click", e => { e.preventDefault(); sidebar.classList.remove("active"); });
+      }
+      async sendChatMessage() {
+        const input = document.getElementById("chat-input"),
+              sendBtn = document.getElementById("chat-send-btn"),
+              container = document.getElementById("chat-messages");
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = ""; input.disabled = true; sendBtn.disabled = true;
+        this.addChatMessage("user", text);
+        this.showTypingIndicator();
+        try {
+          const res = await this.apiUtils.apiCall("/chat/general","POST",{message:text});
+          this.hideTypingIndicator();
+          this.addChatMessage("assistant", res.response);
+        } catch (err) {
+          this.hideTypingIndicator();
+          const msg = err.message.includes("404")
+            ? "Section not found. Please verify the section number."
+            : "An unexpected error occurred. Try again or refine your query.";
+          this.addChatMessage("assistant", msg);
+        } finally {
+          input.disabled = false; sendBtn.disabled = false; input.focus();
+          container.scrollTop = container.scrollHeight;
+        }
+      }
+      addChatMessage(sender, msg) {
+        const container = document.getElementById("chat-messages");
+        if (!container) return;
+        const div = document.createElement("div");
+        div.className = `message ${sender}-message`;
+        const avatar = sender==="user"?"U":'<i class="fas fa-robot"></i>';
+        div.innerHTML = `
+          <div class="message-avatar">${avatar}</div>
+          <div class="message-content">${this.format(msg)}</div>
+        `;
+        container.appendChild(div);
+      }
+      format(text) {
+        return text
+          .replace(/\*\*(.*?)\*\*/g, '<span class="highlight">$1</span>') // highlight instead of bold
+          .split(/\n\n/).map(block => {
+            if (/^\*\s+/.test(block)) {
+              const items = block.trim().split(/\n/).map(l=>l.replace(/^\*\s+/,""));
+              return `<ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul>`;
+            }
+            return `<p>${block.replace(/\n/g,"<br>")}</p>`;
+          }).join("");
+      }
+      showTypingIndicator() {
+        document.getElementById("typing-indicator").classList.remove("hidden");
+      }
+      hideTypingIndicator() {
+        document.getElementById("typing-indicator").classList.add("hidden");
+      }
+    }
+    document.addEventListener("DOMContentLoaded", ()=>{
+      if (window.APIUtils) new VirtualAssistant(new window.APIUtils());
+      const toggle = document.getElementById("theme-toggle"),
+            saved = localStorage.getItem("theme")||"light";
+      document.documentElement.setAttribute("data-color-scheme", saved);
+      toggle?.addEventListener("click", () => {
+        const curr = document.documentElement.getAttribute("data-color-scheme"),
+              next = curr==="light"?"dark":"light";
+        document.documentElement.setAttribute("data-color-scheme", next);
+        localStorage.setItem("theme", next);
+        toggle.querySelector("i").className = next==="light"?"fas fa-moon":"fas fa-sun";
+      });
+    });
+  </script>
+  <script src="js/main-app.js"></script>
+</body>
+</html>

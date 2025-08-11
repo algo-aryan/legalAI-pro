@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegalAI Pro - AI-Powered Legal Solutions</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-brand">
+            <i class="fas fa-balance-scale nav-logo-icon"></i>
+            <span class="nav-logo-text">LegalAI Pro</span>
+        </a>
+        
+        <div class="nav-menu" id="nav-menu">
+            <a href="index.html" class="nav-link active" data-section="home">Home</a>
+            <a href="#features" class="nav-link" data-section="features">Features</a>
+            <a href="about.html" class="nav-link" data-section="about">About</a>
+            <a href="contact.html" class="nav-link" data-section="contact">Contact</a>
+            
+            <button class="btn btn--primary nav-cta" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        
+        <div class="nav-hamburger" id="nav-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+<section class="section active" id="home">
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">AI-Powered Legal Solutions for Modern Law Practices</h1>
+                    <p class="hero-subtitle">
+                        Empowering legal professionals with cutting-edge AI technology for contract analysis, legal assistance, and case prediction.
+                    </p>
+                    
+                    <div class="hero-benefits">
+                        <div class="hero-benefit">
+                            <i class="fas fa-robot"></i>
+                            <span><strong>AI-Powered:</strong> Advanced machine learning algorithms</span>
+                        </div>
+                        <div class="hero-benefit">
+                            <i class="fas fa-shield-alt"></i>
+                            <span><strong>Secure:</strong> Enterprise-grade security & privacy</span>
+                        </div>
+                        <div class="hero-benefit">
+                            <i class="fas fa-bolt"></i>
+                            <span><strong>Fast:</strong> Instant results and analysis</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-cta">
+                        <button class="btn btn--primary btn--lg hero-btn-primary">
+                            Get Started
+                            <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                        </button>
+                        <button class="btn btn--outline btn--lg hero-btn-secondary">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="hero-card">
+                        <div class="hero-card-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <h3>Smart Analysis</h3>
+                        <p>AI-powered contract review and risk assessment</p>
+                    </div>
+                    <div class="hero-card">
+                        <div class="hero-card-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Intelligent Insights</h3>
+                        <p>Data-driven legal recommendations and predictions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features Overview -->
+        <div class="features-overview" id="features">
+            <div class="section-header">
+                <h2 class="section-title">Our AI-Powered Legal Tools</h2>
+                <p class="section-subtitle">Discover how our advanced AI solutions can transform your legal practice</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-feature="contract-analyzer">
+                    <div class="feature-card-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3 class="feature-card-title">Smart Contract Analyzer</h3>
+                    <p class="feature-card-description">Upload contracts for AI-powered analysis, risk assessment, and key insights</p>
+                    <ul class="feature-card-benefits">
+                        <li>Automated contract review in minutes</li>
+                        <li>Risk identification and assessment</li>
+                        <li>Key terms and clause extraction</li>
+                        <li>Contract-specific AI chat support</li>
+                    </ul>
+                    <button class="btn btn--primary feature-card-btn">Analyze Contract</button>
+                </div>
+                
+                <div class="feature-card" data-feature="virtual-assistant">
+                    <div class="feature-card-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-card-title">Virtual Legal Assistant</h3>
+                    <p class="feature-card-description">Get instant answers to legal questions from our AI-powered assistant</p>
+                    <ul class="feature-card-benefits">
+                        <li>24/7 legal question answering</li>
+                        <li>Conversation history and context</li>
+                        <li>Point-wise clear responses</li>
+                        <li>Multi-domain legal expertise</li>
+                    </ul>
+                    <button class="btn btn--primary feature-card-btn">Ask Assistant</button>
+                </div>
+                
+                <div class="feature-card" data-feature="case-prediction">
+                    <div class="feature-card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-card-title">Case Outcome Prediction</h3>
+                    <p class="feature-card-description">Predict case outcomes using historical data and AI analytics</p>
+                    <ul class="feature-card-benefits">
+                        <li>Data-driven case analysis</li>
+                        <li>Historical precedent matching</li>
+                        <li>Confidence scoring and insights</li>
+                        <li>Strategic decision support</li>
+                    </ul>
+                    <button class="btn btn--primary feature-card-btn">Predict Outcome</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="index.html" class="nav-brand">
+                    <i class="fas fa-balance-scale nav-logo-icon"></i>
+                    <span class="nav-logo-text">LegalAI Pro</span>
+                </a>
+                <p>Revolutionizing the legal industry with cutting-edge AI technology</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Products</h4>
+                    <a href="contract-analyzer.html">Contract Analyzer</a>
+                    <a href="virtual-assistant.html">Virtual Assistant</a>
+                    <a href="case-prediction.html">Case Prediction</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#terms">Terms of Service</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <a href="#help">Help Center</a>
+                    <a href="#docs">Documentation</a>
+                    <a href="#api">API Reference</a>
+                    <a href="#status">Status</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 LegalAI Pro. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Theme Toggle Script -->
+<script>
+    // Initialize theme
+    const currentTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-color-scheme", currentTheme);
+    
+    // Theme toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById("theme-toggle");
+        if (themeToggle) {
+            themeToggle.addEventListener("click", function() {
+                const currentTheme = document.documentElement.getAttribute("data-color-scheme");
+                const newTheme = currentTheme === "light" ? "dark" : "light";
+                document.documentElement.setAttribute("data-color-scheme", newTheme);
+                localStorage.setItem("theme", newTheme);
+                
+                const icon = themeToggle.querySelector("i");
+                if (icon) {
+                    icon.className = newTheme === "light" ? "fas fa-moon" : "fas fa-sun";
+                }
+            });
+        }
+        
+        // Update theme toggle icon
+        const themeToggle2 = document.getElementById("theme-toggle");
+        if (themeToggle2) {
+            const icon = themeToggle2.querySelector("i");
+            if (icon) {
+                icon.className = currentTheme === "light" ? "fas fa-moon" : "fas fa-sun";
+            }
+        }
+    });
+    
+    // Simple navigation for multi-page setup
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update navigation links to point to separate HTML files
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            const section = link.getAttribute('data-section');
+            if (section && section !== 'features') {
+                if (section === 'home') {
+                    link.href = 'index.html';
+                } else {
+                    link.href = section + '.html';
+                }
+            }
+        });
+        
+        // Update feature card links
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+            const feature = card.getAttribute('data-feature');
+            if (feature) {
+                card.addEventListener('click', () => {
+                    window.location.href = feature + '.html';
+                });
+            }
+        });
+        
+        // Update hero buttons
+        const heroBtn = document.querySelector('.hero-btn-primary');
+        if (heroBtn) {
+            heroBtn.addEventListener('click', () => {
+                window.location.href = 'contract-analyzer.html';
+            });
+        }
+    });
+</script>
+
+<!-- JavaScript Modules -->
+<script src="js/api-utils.js"></script>
+<script src="js/ui-utils.js"></script>
+<script src="js/main-app.js"></script>
+</body>
+</html>

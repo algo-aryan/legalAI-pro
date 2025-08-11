@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Analyzer - LegalAI Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Enhanced CSS Variables for Better Theme Consistency */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --danger-gradient: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+            --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            
+            --card-shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover-light: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --card-shadow-dark: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --card-shadow-hover-dark: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+            
+            --glass-bg-light: rgba(255, 255, 255, 0.85);
+            --glass-bg-dark: rgba(31, 41, 55, 0.85);
+            --glass-border-light: rgba(255, 255, 255, 0.3);
+            --glass-border-dark: rgba(75, 85, 99, 0.3);
+        }
+
+        /* Light mode defaults */
+        :root {
+            --card-bg: #ffffff;
+            --card-secondary-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-color: #1e293b;
+            --text-color-secondary: #64748b;
+            --text-color-muted: #94a3b8;
+            --tab-bg: #f1f5f9;
+            --content-bg: #ffffff;
+            --accent-bg: rgba(59, 130, 246, 0.1);
+            --card-shadow: var(--card-shadow-light);
+            --card-shadow-hover: var(--card-shadow-hover-light);
+            --glass-bg: var(--glass-bg-light);
+            --glass-border: var(--glass-border-light);
+        }
+
+        /* Dark mode overrides */
+        [data-color-scheme="dark"] {
+            --card-bg: #1e293b;
+            --card-secondary-bg: #0f172a;
+            --border-color: #334155;
+            --text-color: #f1f5f9;
+            --text-color-secondary: #cbd5e1;
+            --text-color-muted: #94a3b8;
+            --tab-bg: #0f172a;
+            --content-bg: #1e293b;
+            --accent-bg: rgba(59, 130, 246, 0.2);
+            --card-shadow: var(--card-shadow-dark);
+            --card-shadow-hover: var(--card-shadow-hover-dark);
+            --glass-bg: var(--glass-bg-dark);
+            --glass-border: var(--glass-border-dark);
+        }
+
+        /* Base Layout Styles */
+        .contract-chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            margin-top: 0;
+            z-index: 1000;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            font-size: 22px;
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            box-shadow: var(--card-shadow-hover);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .contract-chat-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .contract-chat-btn i {
+            margin: 0;
+        }
+
+        .contract-analyzer-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .contract-analyzer-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        .analyzer-upload-area, .analyzer-results {
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+        }
+
+        .upload-zone, .results-placeholder {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary-color, #3b82f6);
+            background: var(--accent-bg);
+            transform: translateY(-2px);
+        }
+
+        .upload-progress {
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .upload-zone {
+            cursor: pointer;
+        }
+
+        /* Enhanced Results Content */
+        .analyzer-results .results-content {
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+        }
+
+        /* Professional Tab System */
+        .results-tabs {
+            display: flex;
+            background: var(--tab-bg);
+            border-bottom: 2px solid var(--border-color);
+            padding: 8px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color-secondary);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            text-align: center;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: var(--accent-bg);
+            color: var(--primary-color, #3b82f6);
+            transform: translateY(-1px);
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--primary-color, #3b82f6);
+            box-shadow: var(--card-shadow);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .tab-content {
+            flex: 1;
+            background: var(--content-bg);
+            overflow-y: auto;
+        }
+
+        .tab-panel {
+            padding: 32px;
+            display: none;
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Enhanced Summary Section */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .summary-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--primary-color, #3b82f6);
+        }
+
+        .summary-card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card:nth-child(1) .summary-card-icon {
+            background: var(--primary-gradient);
+        }
+
+        .summary-card:nth-child(2) .summary-card-icon {
+            background: var(--success-gradient);
+        }
+
+        .summary-card:nth-child(3) .summary-card-icon {
+            background: var(--info-gradient);
+        }
+
+        .summary-card:nth-child(4) .summary-card-icon {
+            background: var(--warning-gradient);
+        }
+
+        .summary-card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .summary-card-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-color-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 8px 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .summary-card-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 0;
+            line-height: 1.4;
+            word-break: break-word;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Enhanced Risk Analysis Section */
+        #risk-items {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .risk-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            border-left: 6px solid currentColor;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .risk-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background: currentColor;
+            transition: opacity 0.3s ease;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .risk-card:hover::before {
+            opacity: 0.06;
+        }
+
+        .risk-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .risk-header i {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+            background: currentColor;
+        }
+
+        .risk-header h5 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: currentColor;
+            flex: 1;
+            font-family: 'Inter', sans-serif;
+            text-transform: capitalize;
+        }
+
+        .risk-context {
+            margin: 0;
+            color: var(--text-color-secondary);
+            line-height: 1.7;
+            font-size: 15px;
+            padding-left: 64px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Risk Level Colors */
+        .risk-card.high { 
+            color: #ef4444;
+            border-left-color: #ef4444;
+        }
+
+        .risk-card.medium { 
+            color: #f59e0b;
+            border-left-color: #f59e0b;
+        }
+
+        .risk-card.low { 
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        /* Enhanced Key Terms Section */
+        #terms-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .term-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .term-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-gradient);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .term-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--primary-color, #3b82f6);
+        }
+
+        .term-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .term-keyword {
+            font-weight: 700;
+            color: var(--primary-color, #3b82f6);
+            margin: 0 0 12px 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: capitalize;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .term-keyword::before {
+            content: '📋';
+            font-size: 18px;
+            filter: grayscale(20%);
+        }
+
+        .term-context {
+            margin: 0;
+            color: var(--text-color-secondary);
+            line-height: 1.7;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Empty State Enhancement */
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            color: var(--text-color-secondary);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 24px;
+            display: block;
+            opacity: 0.6;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 15px;
+            opacity: 0.8;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .summary-card {
+            animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .summary-card:nth-child(1) { animation-delay: 0.1s; }
+        .summary-card:nth-child(2) { animation-delay: 0.2s; }
+        .summary-card:nth-child(3) { animation-delay: 0.3s; }
+        .summary-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .risk-card, .term-item {
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .tab-panel {
+                padding: 20px;
+            }
+
+            .summary-card {
+                padding: 20px;
+                gap: 16px;
+            }
+
+            .summary-card-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 24px;
+            }
+
+            .risk-card, .term-item {
+                padding: 20px;
+            }
+
+            .risk-context {
+                padding-left: 0;
+                margin-top: 12px;
+            }
+
+            .risk-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-brand">
+            <i class="fas fa-balance-scale nav-logo-icon"></i>
+            <span class="nav-logo-text">LegalAI Pro</span>
+        </a>
+        
+        <div class="nav-menu" id="nav-menu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="index.html#features" class="nav-link">Features</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+            <button class="btn btn--primary nav-cta" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        
+        <div class="nav-hamburger" id="nav-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+<section class="section active" id="contract-analyzer">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Smart Contract Analyzer</h2>
+            <p class="section-subtitle">Upload your legal contracts for comprehensive AI-powered analysis</p>
+        </div>
+        
+        <div class="contract-analyzer-layout">
+            <div class="analyzer-upload-area">
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Drop your contract here</h3>
+                    <p>or click to browse files</p>
+                    <input type="file" id="file-input" accept=".pdf" style="display:none;">
+                    <div class="upload-info">
+                        <p><strong>Supported format:</strong> PDF (Max 10MB)</p>
+                    </div>
+                </div>
+                
+                <div class="upload-progress hidden" id="upload-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <p class="progress-text" id="progress-text">Uploading...</p>
+                </div>
+            </div>
+            
+            <div class="analyzer-results">
+                <div class="results-placeholder" id="results-placeholder">
+                    <div class="placeholder-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3>Upload a contract to see results</h3>
+                    <p>Our AI will analyze your contract and provide detailed insights including summary, risk assessment, and key terms.</p>
+                </div>
+                
+                <div class="results-content hidden" id="results-content">
+                    <div class="results-tabs">
+                        <button class="tab-btn active" data-tab="summary">
+                            <i class="fas fa-chart-pie" style="margin-right: 8px;"></i>
+                            Summary
+                        </button>
+                        <button class="tab-btn" data-tab="risks">
+                            <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                            Risk Analysis
+                        </button>
+                        <button class="tab-btn" data-tab="terms">
+                            <i class="fas fa-list-ul" style="margin-right: 8px;"></i>
+                            Key Terms
+                        </button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div class="tab-panel active" id="summary-panel">
+                            <div class="summary-grid">
+                                <div class="summary-card">
+                                    <div class="summary-card-icon">
+                                        <i class="fas fa-file-signature"></i>
+                                    </div>
+                                    <div class="summary-card-content">
+                                        <p class="summary-card-label">Contract Type</p>
+                                        <h4 class="summary-card-value" id="contract-type">-</h4>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-card-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="summary-card-content">
+                                        <p class="summary-card-label">Parties Involved</p>
+                                        <h4 class="summary-card-value" id="contract-parties">-</h4>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-card-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="summary-card-content">
+                                        <p class="summary-card-label">Effective Date</p>
+                                        <h4 class="summary-card-value" id="contract-date">-</h4>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-card-icon">
+                                        <i class="fas fa-hourglass-half"></i>
+                                    </div>
+                                    <div class="summary-card-content">
+                                        <p class="summary-card-label">Contract Duration</p>
+                                        <h4 class="summary-card-value" id="contract-duration">-</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-panel" id="risks-panel">
+                            <div id="risk-items"></div>
+                        </div>
+                        
+                        <div class="tab-panel" id="terms-panel">
+                            <div id="terms-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn btn--primary contract-chat-btn hidden" id="contract-chat-btn" title="Chat about Contract">
+            <i class="fas fa-comments"></i>
+        </button>
+    </div>
+</section>
+</main>
+
+<div class="modal hidden" id="contract-chat-modal">
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Contract Q&A</h3>
+            <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="contract-chat-messages" id="contract-chat-messages"></div>
+            <div class="contract-chat-input">
+                <input type="text" placeholder="Ask a question about the contract..." id="contract-chat-input">
+                <button id="contract-chat-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="index.html" class="nav-brand">
+                    <i class="fas fa-balance-scale nav-logo-icon"></i>
+                    <span class="nav-logo-text">LegalAI Pro</span>
+                </a>
+                <p>Revolutionizing the legal industry with cutting-edge AI technology</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Products</h4>
+                    <a href="contract-analyzer.html">Contract Analyzer</a>
+                    <a href="virtual-assistant.html">Virtual Assistant</a>
+                    <a href="case-prediction.html">Case Prediction</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#terms">Terms of Service</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <a href="#help">Help Center</a>
+                    <a href="#docs">Documentation</a>
+                    <a href="#api">API Reference</a>
+                    <a href="#status">Status</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 LegalAI Pro. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/api-utils.js"></script>
+<script src="js/ui-utils.js"></script>
+<script src="js/contract-analyzer.js"></script>
+<script src="js/main-app.js"></script>
+
+<script>
+    const currentTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-color-scheme", currentTheme);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById("theme-toggle");
+        if (themeToggle) {
+            const icon = themeToggle.querySelector("i");
+            if (icon) icon.className = currentTheme === "light" ? "fas fa-moon" : "fas fa-sun";
+            
+            themeToggle.addEventListener("click", function() {
+                const currentTheme = document.documentElement.getAttribute("data-color-scheme");
+                const newTheme = currentTheme === "light" ? "dark" : "light";
+                document.documentElement.setAttribute("data-color-scheme", newTheme);
+                localStorage.setItem("theme", newTheme);
+                const icon = themeToggle.querySelector("i");
+                if (icon) icon.className = newTheme === "light" ? "fas fa-moon" : "fas fa-sun";
+            });
+        }
+
+        // Keep click-to-upload working
+        const uploadZone = document.getElementById('upload-zone');
+        const fileInput = document.getElementById('file-input');
+        if(uploadZone && fileInput) {
+            uploadZone.addEventListener('click', () => fileInput.click());
+        }
+    });
+</script>
+</body>
+</html>
