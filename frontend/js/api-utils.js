@@ -1,6 +1,6 @@
 // API Utilities for LegalAI
 class APIUtils {
-    constructor(baseUrl = "http://localhost:5000/api") {
+    constructor(baseUrl = "https://legalai-pro.onrender.com/api") {
         this.apiBaseUrl = baseUrl;
     }
     

@@ -4,7 +4,6 @@ langchain==0.0.354
 langchain-google-genai==0.0.11
 sentence-transformers==2.2.2
 faiss-cpu==1.7.4
-PyMuPDF==1.23.14
 google-generativeai==0.4.1
 werkzeug==2.3.7
 huggingface-hub==0.20.3
